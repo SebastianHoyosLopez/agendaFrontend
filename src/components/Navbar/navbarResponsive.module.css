@@ -1,0 +1,18 @@
+.list {
+    list-style-type: none;
+    margin: 0;
+    padding: 1rem;
+    width: 5rem;
+}
+
+.item {
+    margin-top: 1rem;
+    
+}
+
+.link {
+    text-decoration: none;
+    color: black
+  }
+
+    
