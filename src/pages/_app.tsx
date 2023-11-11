@@ -1,11 +1,14 @@
+import { AuthProvider } from "@/components/Auth/AuthContext";
 import Navbar from "@/components/Navbar";
 import { AppProps } from "next/app";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <Navbar />
-      <Component {...pageProps} />
+      <AuthProvider>
+        <Navbar />
+        <Component {...pageProps} />
+      </AuthProvider>
     </>
   )
 }
