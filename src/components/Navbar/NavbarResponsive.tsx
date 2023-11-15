@@ -2,7 +2,12 @@ import Link from 'next/link';
 import React, { useState } from 'react'
 import styles from './navbarResponsive.module.css'
 
-const NavbarResponsive: React.FC = () => {
+interface NavbarResponsiveProps {
+  handleLogout: () => void;
+  isValid: boolean
+}
+
+const NavbarResponsive: React.FC<NavbarResponsiveProps> = ({ handleLogout, isValid }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const toggleMenu = () => {
@@ -26,6 +31,7 @@ const NavbarResponsive: React.FC = () => {
           <li className={styles.item}>
             <Link className={styles.link} href="/reservations">Reservations</Link>
           </li>
+          <li><button onClick={() => handleLogout()}>Cerrar Sesión</button></li>
         </ul> : ''}
     </>
   )
