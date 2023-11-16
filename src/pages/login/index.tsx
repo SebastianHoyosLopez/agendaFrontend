@@ -3,7 +3,7 @@ import { useAuth } from "@/components/Auth/AuthContext";
 import { useRouter } from "next/router";
 import { LoginResponse } from "@/interface";
 import Cookies from "js-cookie";
-import Form from "../../components/form/Form";
+import Form from "../../components/form/formLogin/Form";
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -29,6 +29,9 @@ const Login: React.FC = () => {
         const data: LoginResponse = await response.json();
         const token = data.accessToken;
 
+        const userId = data.user.id
+        
+        Cookies.set('userId', userId)
         Cookies.set("token", token);
 
         // Actualizamos el estado global de autenticación usando la función login del contexto.

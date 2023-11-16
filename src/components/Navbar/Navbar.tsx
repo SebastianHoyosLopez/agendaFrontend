@@ -33,10 +33,10 @@ const Navbar = () => {
             <Link className={styles.link} href="/">Home</Link>
           </li>
           <li className={styles.item}>
-            <Link className={styles.link} href="/about-us">About Us</Link>
+            <Link className={styles.link} href="/reservations">Reservations</Link>
           </li>
           <li className={styles.item}>
-            <Link className={styles.link} href="/reservations">Reservations</Link>
+            <Link className={styles.link} href="/about-us">About Us</Link>
           </li>
           <li><button onClick={() => handleLogout()}>Cerrar Sesión</button></li>
         </ul></>) : (

@@ -23,6 +23,21 @@ export interface UserOwner {
   };
 }
 
+export interface ReservationCreate {
+  id: number;
+  place: string;
+  date: string;
+  description: string;
+  hour: string;
+}
+
+export interface NewReservation {
+  place: string;
+  date: string;
+  description: string;
+  hour: string;
+}
+
 export interface Reservation {
   id: string;
   createdAt: string;
