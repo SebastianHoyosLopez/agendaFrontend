@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NewReservation } from "@/interface";
-import styles from "./styles.module.css"; // Ajusta la ruta según tu estructura de archivos
+import styles from "./formReservations.module.css"; 
 
 interface ReservationFormProps {
   onReservationSubmit: (reservation: NewReservation) => void;
@@ -16,9 +16,6 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Validación adicional según tus necesidades
-
     const newReservation: NewReservation = {
       place,
       date,
@@ -28,7 +25,6 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
 
     onReservationSubmit(newReservation);
 
-    // Limpiar los campos después de enviar la reserva
     setPlace("");
     setDate("");
     setDescription("");

@@ -1,53 +1,84 @@
-import React, { useEffect, useState } from 'react'
-import NavbarResponsive from './NavbarResponsive'
-import Link from 'next/link'
-import styles from './navbar.module.css'
-import { useAuth } from '../Auth/AuthContext'
-import { useRouter } from 'next/router'
+import React, { useEffect, useState } from "react";
+import NavbarResponsive from "./NavbarResponsive";
+import Link from "next/link";
+import styles from "./navbar.module.css";
+import { useAuth } from "../Auth/AuthContext";
+import { useRouter } from "next/router";
 
 const Navbar = () => {
   const { checkToken, logout } = useAuth();
-  const [isValid, setIsValid] = useState<void>()
+  const [isValid, setIsValid] = useState<void>();
   const router = useRouter();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const verifyToken = async () => {
       const isValid: void = await checkToken();
-      setIsValid(isValid)
+      setIsValid(isValid);
     };
     verifyToken();
   }, [checkToken]);
 
   const handleLogout = () => {
-    logout()
-    router.push('/login')
-  }
+    logout();
+    router.push("/login");
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
     <div className={styles.navbar}>
-      {isValid ? (<><div className={styles.responsive}>
-        <NavbarResponsive isValid={isValid} handleLogout={handleLogout} />
-      </div>
-        <ul className={styles.list}>
-          <li className={styles.item}>
-            <Link className={styles.link} href="/">Home</Link>
-          </li>
-          <li className={styles.item}>
-            <Link className={styles.link} href="/reservations">Reservations</Link>
-          </li>
-          <li className={styles.item}>
-            <Link className={styles.link} href="/about-us">About Us</Link>
-          </li>
-          <li><button onClick={() => handleLogout()}>Cerrar Sesión</button></li>
-        </ul></>) : (
-        <ul className={styles.list}>
-          <li className={styles.item}>
-            <Link className={styles.link} href='/login'>iniciar sesión</Link>
-          </li>
-        </ul>
+      {isValid ? (
+        <>
+          <div className={styles.responsive}>
+            <NavbarResponsive isValid={isValid} handleLogout={handleLogout} />
+          </div>
+          <ul className={styles.list}>
+            <li className={styles.item}>
+              <Link className={styles.link} href="/">
+                Home
+              </Link>
+            </li>
+            <li className={styles.item}>
+              <Link className={styles.link} href="/reservations">
+                Reservations
+              </Link>
+            </li>
+            <li className={styles.item}>
+              <Link className={styles.link} href="/about-us">
+                About Us
+              </Link>
+            </li>
+            {/* Agregar el icono de perfil */}
+            <li className={styles.alignRight} onClick={toggleMenu}>
+              <span className="material-icons">person</span>
+              {isMenuOpen && (
+                <div className={styles.dropdownMenu}>
+                  <ul>
+                    <li >
+                      <Link href="/perfil">Perfil</Link>
+                    </li>
+                    <li >
+                      <Link href="/configuracion">Configuración</Link>
+                    </li>
+                    <li >
+                      <button onClick={() => handleLogout()}>
+                        Cerrar Sesión
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </li>
+          </ul>
+        </>
+      ) : (
+        ""
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

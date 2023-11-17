@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent } from 'react';
-import styles from './form.module.css'
+import styles from './formLogin.module.css'
 
 interface FormProps {
   handleLogin: (e: FormEvent) => Promise<void>;
@@ -9,7 +9,7 @@ interface FormProps {
   password: string;
 }
 
-const Form: React.FC<FormProps> = ({ handleLogin, setPassword, setUsername, username, password }) => {
+const FormLogin: React.FC<FormProps> = ({ handleLogin, setPassword, setUsername, username, password }) => {
   return (
     <div className={styles.login_page}>
       <div className={styles.form}>
@@ -33,4 +33,4 @@ const Form: React.FC<FormProps> = ({ handleLogin, setPassword, setUsername, user
   );
 };
 
-export default Form;
+export default FormLogin;

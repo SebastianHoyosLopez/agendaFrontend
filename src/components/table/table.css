@@ -15,19 +15,24 @@ th {
   font-weight: bold;
 }
 
+.linkStyle {
+  text-decoration: none;
+  /* Otros estilos que desees aplicar */
+}
+
 td,
 th {
+  text-decoration: none;
   padding: 10px;
   border: 1px solid #ccc;
   text-align: left;
   font-size: 18px;
 }
 
-/* 
-Max width before this PARTICULAR table gets nasty
-This query will take effect for any screen smaller than 760px
-and also iPads specifically.
-*/
+span {
+  text-decoration: none;
+}
+
 @media only screen and (max-width: 760px),
   (min-device-width: 768px) and (max-device-width: 1024px) {
   table {
@@ -56,7 +61,6 @@ and also iPads specifically.
   }
 
   td {
-    /* Behave  like a "row" */
     border: none;
     border-bottom: 1px solid #eee;
     position: relative;

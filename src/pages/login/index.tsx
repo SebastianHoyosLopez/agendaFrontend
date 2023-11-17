@@ -3,7 +3,7 @@ import { useAuth } from "@/components/Auth/AuthContext";
 import { useRouter } from "next/router";
 import { LoginResponse } from "@/interface";
 import Cookies from "js-cookie";
-import Form from "../../components/form/formLogin/Form";
+import FormLogin from "../../components/form/formLogin/FormLogin";
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -29,17 +29,14 @@ const Login: React.FC = () => {
         const data: LoginResponse = await response.json();
         const token = data.accessToken;
 
-        const userId = data.user.id
-        
-        Cookies.set('userId', userId)
+        const userId = data.user.id;
+
+        Cookies.set("userId", userId);
         Cookies.set("token", token);
 
-        // Actualizamos el estado global de autenticación usando la función login del contexto.
         login();
         router.push("/");
-
-        console.log("Inicio de sesión exitoso. Token:", token);
-        console.log(data);
+        
       } else {
         console.error("Inicio de sesión fallido");
       }
@@ -49,7 +46,7 @@ const Login: React.FC = () => {
   };
   return (
     <>
-      <Form
+      <FormLogin
         handleLogin={handleLogin}
         username={username}
         password={password}

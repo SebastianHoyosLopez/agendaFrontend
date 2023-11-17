@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Table from "@/components/table/Table";
 import Reserve from "@/components/form/formReservation/Reserve";
-import styles from './styles.module.css'; // Ajusta la ruta según tu estructura de archivos
+import styles from "./reservations.module.css";
+import Link from "next/link";
 
 const columns = [
   { label: "Place", key: "place" },
@@ -15,12 +16,11 @@ const columns = [
 const Reservations: React.FC = () => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loggedIn, setLoggedIn] = useState(false);
+  const token = Cookies.get("token");
 
   useEffect(() => {
     const fetchReservations = async () => {
       try {
-        const token = Cookies.get("token");
-
         if (!token) {
           setLoggedIn(false);
           return;
@@ -61,10 +61,36 @@ const Reservations: React.FC = () => {
       setReservations([]);
       setLoggedIn(false);
     };
-  }, []);
+  }, [token]);
+
+  const headers = new Headers();
+  headers.append("agenda_token", token!);
+
+  const handleDelete = (reservationId: string, relationId: string) => {
+    // Lógica para llamar a la API y eliminar la reserva
+    fetch(
+      `http://localhost:4000/apiAgenda/reservations/delete/${reservationId}/${relationId}`,
+      {
+        method: "DELETE",
+        headers: headers
+      }
+    ).then((response) => {
+        if (response.ok) {
+          
+          console.log(response, "Reserva eliminada con éxito");
+        } else {
+          console.error("Error al eliminar la reserva");
+        }
+      })
+      .catch((error) => {
+        console.error("Error de red:", error);
+      });
+  };
 
   const reservationsDetailsLink = (reservation: Reservation) =>
     `/reservations/${reservation.id}`;
+
+  // const deleteItem = (reservation: Reservation) => reservation.id;
 
   return (
     <>
@@ -72,21 +98,22 @@ const Reservations: React.FC = () => {
         <>
           <div className={styles.container}>
             <div className={styles.form_container}>
-              <h1 style={{ textAlign: "center" }}>Reserve a Spot</h1>
+              <h1>Reserve a Spot</h1>
               <Reserve />
             </div>
             <div className={styles.table_container}>
-              <h1 style={{ textAlign: "center" }}>Reservaciones</h1>
+              <h1>Reservaciones</h1>
               <Table<Reservation>
                 data={reservations}
                 columns={columns}
                 detailsLink={reservationsDetailsLink}
+                onDelete={handleDelete}
               />
             </div>
           </div>
         </>
       ) : (
-        <p>Debes iniciar sesión para ver las reservas.</p>
+        <p>Debes iniciar sesión para ver las reservas.<Link href={'login'}>IR A INICIAR SESIÓN</Link></p>
       )}
     </>
   );

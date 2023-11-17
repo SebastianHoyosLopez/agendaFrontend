@@ -1,6 +1,6 @@
-import React from 'react';
-import Link from 'next/link';
-import './table.css';
+import React from "react";
+import Link from "next/link";
+import "./table.css";
 
 interface Column {
   label: string;
@@ -11,9 +11,22 @@ interface TableProps<T> {
   data: T[];
   columns: Column[];
   detailsLink?: (item: T) => string;
+  onDelete?: (reservationId: string, relationId: string) => void;
 }
 
-const Table = <T extends Record<string, any>>({ data, columns, detailsLink }: TableProps<T>) => {
+const Table = <T extends Record<string, any>>({
+  data,
+  columns,
+  detailsLink,
+  onDelete,
+}: TableProps<T>) => {
+  const handleDelete = (reservationId: string, relationId: string) => {
+    if (onDelete) {
+      onDelete(reservationId, relationId);
+      window.location.reload();
+    }
+  };
+
   return (
     <table>
       <thead>
@@ -33,8 +46,15 @@ const Table = <T extends Record<string, any>>({ data, columns, detailsLink }: Ta
             {detailsLink && (
               <td>
                 <Link href={detailsLink(item)}>
-                  Details
+                  <span className="material-icons">display_settings</span>
                 </Link>
+                <button
+                  onClick={() =>
+                    handleDelete(item.id, item.usersIncludes[0].id)
+                  }
+                >
+                  <span className="material-icons">delete_forever</span>
+                </button>
               </td>
             )}
           </tr>

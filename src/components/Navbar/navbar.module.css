@@ -20,6 +20,10 @@
   color: black;
 }
 
+.alignRight {
+  margin-left: auto;
+}
+
 /* Estilos para pantallas pequeñas (esconde la lista para pantallas pequeña) */
 @media (max-width: 768px) {
   .list {
