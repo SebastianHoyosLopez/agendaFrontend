@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import Table from "@/components/table/Table";
 import Reserve from "@/components/form/formReservation/Reserve";
 import styles from "./reservations.module.css";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 const columns = [
   { label: "Place", key: "place" },
@@ -15,17 +15,16 @@ const columns = [
 
 const Reservations: React.FC = () => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
-  const [loggedIn, setLoggedIn] = useState(false);
   const token = Cookies.get("token");
+  const router = useRouter();
 
   useEffect(() => {
     const fetchReservations = async () => {
       try {
         if (!token) {
-          setLoggedIn(false);
+          router.push("/login");
           return;
         }
-
         const response = await fetch(
           "http://localhost:4000/apiAgenda/reservations/all",
           {
@@ -35,22 +34,22 @@ const Reservations: React.FC = () => {
             },
           }
         );
-
         if (response.status === 401) {
-          setLoggedIn(false);
           console.log(
             "El token ha expirado. Redirigiendo a la página de inicio de sesión."
           );
-          // Puedes redirigir o manejar el token expirado según tus necesidades
+          return;
+        }
+
+        if (response.status === 400) {
+          console.log("no hay reservas");
           return;
         }
 
         const data: Reservation[] | undefined = await response.json();
         setReservations(data ?? []);
-        setLoggedIn(true);
       } catch (error) {
         console.error("Error al obtener las reservas", error);
-        setLoggedIn(false);
       }
     };
 
@@ -59,9 +58,8 @@ const Reservations: React.FC = () => {
     // Limpia la suscripción al desmontar el componente
     return () => {
       setReservations([]);
-      setLoggedIn(false);
     };
-  }, [token]);
+  }, [token, router]);
 
   const headers = new Headers();
   headers.append("agenda_token", token!);
@@ -72,11 +70,11 @@ const Reservations: React.FC = () => {
       `http://localhost:4000/apiAgenda/reservations/delete/${reservationId}/${relationId}`,
       {
         method: "DELETE",
-        headers: headers
+        headers: headers,
       }
-    ).then((response) => {
+    )
+      .then((response) => {
         if (response.ok) {
-          
           console.log(response, "Reserva eliminada con éxito");
         } else {
           console.error("Error al eliminar la reserva");
@@ -94,27 +92,27 @@ const Reservations: React.FC = () => {
 
   return (
     <>
-      {loggedIn ? (
-        <>
-          <div className={styles.container}>
-            <div className={styles.form_container}>
-              <h1>Reserve a Spot</h1>
-              <Reserve />
-            </div>
-            <div className={styles.table_container}>
-              <h1>Reservaciones</h1>
+      <>
+        <div className={styles.container}>
+          <div className={styles.form_container}>
+            <h1>Reserve a Spot</h1>
+            <Reserve />
+          </div>
+          <div className={styles.table_container}>
+            <h1>Reservaciones</h1>
+            {reservations.length > 0 ? (
               <Table<Reservation>
                 data={reservations}
                 columns={columns}
                 detailsLink={reservationsDetailsLink}
                 onDelete={handleDelete}
               />
-            </div>
+            ) : (
+              <p>no hay reservas</p>
+            )}
           </div>
-        </>
-      ) : (
-        <p>Debes iniciar sesión para ver las reservas.<Link href={'login'}>IR A INICIAR SESIÓN</Link></p>
-      )}
+        </div>
+      </>
     </>
   );
 };

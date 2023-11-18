@@ -14,7 +14,7 @@
   color: black;
 }
 
-.li_toggleMenu {
-    list-style-type: none;
-    color: red;
-}
+.dropdownMenuLeft {
+    right: 0;
+    left: auto;
+  }

@@ -33,6 +33,8 @@ const Reserve: React.FC = () => {
         // Reserva creada con éxito
         const createdReservation: Reservation = await response.json();
         console.log("Reserva creada con éxito:", createdReservation);
+        window.location.reload();
+
         // Puedes realizar acciones adicionales si es necesario
       } else {
         // Manejar errores de la creación de la reserva

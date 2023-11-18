@@ -1,3 +1,4 @@
+'use client'
 import React, { useEffect, useState } from "react";
 import NavbarResponsive from "./NavbarResponsive";
 import Link from "next/link";
@@ -53,9 +54,9 @@ const Navbar = () => {
             </li>
             {/* Agregar el icono de perfil */}
             <li className={styles.alignRight} onClick={toggleMenu}>
-              <span className="material-icons">person</span>
+              <span className="material-icons">account_circle</span>
               {isMenuOpen && (
-                <div className={styles.dropdownMenu}>
+                <div className={styles.dropdownMenuLeft}>
                   <ul>
                     <li >
                       <Link href="/perfil">Perfil</Link>

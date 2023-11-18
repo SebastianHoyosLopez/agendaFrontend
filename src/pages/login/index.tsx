@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "@/components/Auth/AuthContext";
 import { useRouter } from "next/router";
 import { LoginResponse } from "@/interface";
@@ -10,6 +10,13 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
   const { login } = useAuth();
   const router = useRouter();
+  const token = Cookies.get("token");
+
+  useEffect(() => {
+    if (token) {
+      router.push('/')
+    }
+  }, [token, router])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,7 +43,7 @@ const Login: React.FC = () => {
 
         login();
         router.push("/");
-        
+
       } else {
         console.error("Inicio de sesión fallido");
       }
