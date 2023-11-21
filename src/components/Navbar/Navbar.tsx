@@ -8,14 +8,14 @@ import { useRouter } from "next/router";
 
 const Navbar = () => {
   const { checkToken, logout } = useAuth();
-  const [isValid, setIsValid] = useState<void>();
+  const [isValid, setIsValid] = useState<boolean>();
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const verifyToken = async () => {
-      const isValid: void = await checkToken();
-      setIsValid(isValid);
+      const isValidResult: boolean = await checkToken();
+      setIsValid(isValidResult);
     };
     verifyToken();
   }, [checkToken]);
@@ -34,7 +34,7 @@ const Navbar = () => {
       {isValid ? (
         <>
           <div className={styles.responsive}>
-            <NavbarResponsive isValid={isValid} handleLogout={handleLogout} />
+            <NavbarResponsive handleLogout={handleLogout} />
           </div>
           <ul className={styles.list}>
             <li className={styles.item}>

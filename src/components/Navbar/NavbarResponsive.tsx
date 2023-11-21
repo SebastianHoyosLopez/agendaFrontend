@@ -1,13 +1,14 @@
-import Link from 'next/link';
-import React, { useState } from 'react'
-import styles from './navbarResponsive.module.css'
+import Link from "next/link";
+import React, { useState } from "react";
+import styles from "./navbarResponsive.module.css";
 
 interface NavbarResponsiveProps {
   handleLogout: () => void;
-  isValid: boolean
 }
 
-const NavbarResponsive: React.FC<NavbarResponsiveProps> = ({ handleLogout, isValid }) => {
+const NavbarResponsive: React.FC<NavbarResponsiveProps> = ({
+  handleLogout,
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const toggleMenu = () => {
@@ -16,25 +17,37 @@ const NavbarResponsive: React.FC<NavbarResponsiveProps> = ({ handleLogout, isVal
 
   return (
     <>
-      {
-        isOpen ? (<div onClick={() => toggleMenu()}>{"<"}</div>) :
-          <div onClick={() => toggleMenu()}>&#9776;</div>
-      }
-      {isOpen ?
+      {isOpen ? (
+        <div onClick={() => toggleMenu()}>{"<"}</div>
+      ) : (
+        <div onClick={() => toggleMenu()}>&#9776;</div>
+      )}
+      {isOpen ? (
         <ul className={styles.list}>
           <li>
-            <Link className={styles.link} href="/">Home</Link>
+            <Link className={styles.link} href="/">
+              Home
+            </Link>
           </li>
           <li className={styles.item}>
-            <Link className={styles.link} href="/about-us">About Us</Link>
+            <Link className={styles.link} href="/about-us">
+              About Us
+            </Link>
           </li>
           <li className={styles.item}>
-            <Link className={styles.link} href="/reservations">Reservations</Link>
+            <Link className={styles.link} href="/reservations">
+              Reservations
+            </Link>
           </li>
-          <li><button onClick={() => handleLogout()}>Cerrar Sesión</button></li>
-        </ul> : ''}
+          <li>
+            <button onClick={() => handleLogout()}>Cerrar Sesión</button>
+          </li>
+        </ul>
+      ) : (
+        ""
+      )}
     </>
-  )
-}
+  );
+};
 
 export default NavbarResponsive;

@@ -1,10 +1,11 @@
-import { Reservation } from "@/interface";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import Table from "@/components/table/Table";
-import Reserve from "@/components/form/formReservation/Reserve";
-import styles from "./reservations.module.css";
 import { useRouter } from "next/router";
+
+import Table from "@/components/table/Table";
+import styles from "./reservations.module.css";
+import Reserve from "@/components/form/formReservation/Reserve";
+import { Reservation } from "@/interface";
 
 const columns = [
   { label: "Place", key: "place" },
@@ -21,22 +22,19 @@ const Reservations: React.FC = () => {
   useEffect(() => {
     const fetchReservations = async () => {
       try {
-        if (!token) {
-          router.push("/login");
-          return;
-        }
+        const headers = new Headers();
+        headers.append("agenda_token", token ?? "");
+
         const response = await fetch(
           "http://localhost:4000/apiAgenda/reservations/all",
           {
-            headers: {
-              agenda_token: token,
-              "Content-Type": "application/json",
-            },
+            headers: headers,
           }
         );
         if (response.status === 401) {
           console.log(
-            "El token ha expirado. Redirigiendo a la página de inicio de sesión."
+            "El token ha expirado. Redirigiendo a la página de inicio de sesión.",
+            router.push("/login")
           );
           return;
         }
@@ -52,7 +50,6 @@ const Reservations: React.FC = () => {
         console.error("Error al obtener las reservas", error);
       }
     };
-
     fetchReservations();
 
     // Limpia la suscripción al desmontar el componente
@@ -65,7 +62,6 @@ const Reservations: React.FC = () => {
   headers.append("agenda_token", token!);
 
   const handleDelete = (reservationId: string, relationId: string) => {
-    // Lógica para llamar a la API y eliminar la reserva
     fetch(
       `http://localhost:4000/apiAgenda/reservations/delete/${reservationId}/${relationId}`,
       {

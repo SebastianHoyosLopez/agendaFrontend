@@ -12,11 +12,6 @@ const Login: React.FC = () => {
   const router = useRouter();
   const token = Cookies.get("token");
 
-  useEffect(() => {
-    if (token) {
-      router.push('/')
-    }
-  }, [token, router])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

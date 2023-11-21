@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 
 // AuthContext.tsx
 import React, { createContext, useContext, ReactNode, useState } from 'react';
@@ -11,28 +12,38 @@ interface AuthContextValue {
   isAuthenticated: boolean;
   login: () => void;
   logout: () => void;
-  checkToken: () => void;
+  checkToken: () => Promise<boolean>;
 }
+
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const router = useRouter()
 
   const login = () => {
     setIsAuthenticated(true);
+    router.push('/reservations')
     // Puedes hacer más cosas aquí, como almacenar el token en localStorage si es necesario.
   };
 
   const logout = () => {
     setIsAuthenticated(false);
     Cookies.remove('token')
+    router.push('/login')
     // Puedes hacer más cosas aquí, como limpiar el token de localStorage si es necesario.
   };
 
   const checkToken = async () => {
 
     const token = Cookies.get('token')
+
+    if (!token) {
+      console.error('Token no encontrado');
+      
+      return false;
+    }
     
     try {
       // Realiza una llamada al servidor para validar el token
@@ -41,7 +52,7 @@ export const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ token: token }), 
+        body: JSON.stringify({ token }), 
       });
 
       if (response.ok) {

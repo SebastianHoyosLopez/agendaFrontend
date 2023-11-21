@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import TimePicker from "react-time-picker";
+import "react-time-picker/dist/TimePicker.css";
 import { NewReservation } from "@/interface";
-import styles from "./formReservations.module.css"; 
+import styles from "./formReservations.module.css";
 
 interface ReservationFormProps {
   onReservationSubmit: (reservation: NewReservation) => void;
@@ -10,25 +14,34 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
   onReservationSubmit,
 }) => {
   const [place, setPlace] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState<Date | null>(null);
   const [description, setDescription] = useState("");
-  const [hour, setHour] = useState("");
+  const [hour, setHour] = useState<string | null>(null);
+
+  const handleTimeChange = (newHour: string | null) => {
+    setHour(newHour);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const newReservation: NewReservation = {
-      place,
-      date,
-      description,
-      hour,
-    };
+    if (date && hour) {
+      const newReservation: NewReservation = {
+        place,
+        date: date.toISOString(), // Convert Date to string
+        description,
+        hour,
+      };
 
-    onReservationSubmit(newReservation);
+      onReservationSubmit(newReservation);
 
-    setPlace("");
-    setDate("");
-    setDescription("");
-    setHour("");
+      setPlace("");
+      setDate(null);
+      setDescription("");
+      setHour(null);
+    } else {
+      // Handle the case when date or hour is not selected
+      console.error("Please select date and hour");
+    }
   };
 
   return (
@@ -45,11 +58,15 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
         </label>
         <label className={styles.label}>
           Date:
-          <input
+          <DatePicker
             className={styles.input}
-            type="text"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
+            selected={date}
+            onChange={(newDate: Date | null) => setDate(newDate)}
+            showTimeSelect
+            // timeFormat="HH:mm"
+            // timeIntervals={15}
+            // timeCaption="Time"
+            dateFormat="MMMM d, yyyy h:mm aa"
           />
         </label>
         <label className={styles.label}>
@@ -63,14 +80,15 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
         </label>
         <label className={styles.label}>
           Hour:
-          <input
+          <TimePicker
             className={styles.input}
-            type="text"
             value={hour}
-            onChange={(e) => setHour(e.target.value)}
+            onChange={handleTimeChange}
           />
         </label>
-        <button className={styles.button} type="submit">Reserve</button>
+        <button className={styles.button} type="submit">
+          Reserve
+        </button>
       </form>
     </div>
   );
