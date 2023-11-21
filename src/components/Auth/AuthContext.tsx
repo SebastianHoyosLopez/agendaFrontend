@@ -1,3 +1,4 @@
+import { fetchWithToken } from '@/api/api';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 
@@ -54,7 +55,7 @@ export const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
         },
         body: JSON.stringify({ token }), 
       });
-
+      
       if (response.ok) {
         const data = await response.json();
         return data.isValid;

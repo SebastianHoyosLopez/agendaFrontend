@@ -12,8 +12,8 @@ export default function App({ Component, pageProps }: AppProps) {
           rel="stylesheet"
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
         /> </Head>
+        <Navbar />
         <Authenticator>
-          <Navbar />
           <Component {...pageProps} />
         </Authenticator>
       </AuthProvider>

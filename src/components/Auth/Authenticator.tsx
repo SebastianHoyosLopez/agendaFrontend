@@ -16,7 +16,7 @@ const Authenticator: React.FC<AuthenticatorProps> = ({ children }) => {
     const checkUserToken = async () => {
       if (!token && !(await checkToken())) {
         // Si no hay token o el token no es válido, redirige a la página de inicio de sesión.
-        router.push('/login');
+        router.push("/login");
       }
     };
     checkUserToken();
