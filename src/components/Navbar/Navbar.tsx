@@ -52,7 +52,6 @@ const Navbar = () => {
                 About Us
               </Link>
             </li>
-            {/* Agregar el icono de perfil */}
             <li className={styles.alignRight} onClick={toggleMenu}>
               <span className="material-icons">account_circle</span>
               {isMenuOpen && (

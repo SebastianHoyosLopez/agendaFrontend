@@ -1,5 +1,5 @@
 // api.ts
-import { LoginResponse, Reservation } from "@/interface";
+import { LoginResponse, Reservation, UserValidationToken } from "@/interface";
 import Cookies from "js-cookie";
 
 const API_BASE_URL = "http://localhost:4000/apiAgenda";
@@ -10,10 +10,7 @@ interface RequestOptions {
   body?: BodyInit;
 }
 
-export const fetchWithToken = async (
-  url: string,
-  options: RequestOptions = {}
-) => {
+const fetchWithToken = async (url: string, options: RequestOptions = {}) => {
   const token = Cookies.get("token");
   const headers = new Headers({
     ...(options.headers || {}),
@@ -26,8 +23,6 @@ export const fetchWithToken = async (
   });
   return response;
 };
-
-// api.ts
 
 export const getReservations = async (
   token: string | undefined
@@ -93,34 +88,59 @@ export const deleteReservation = async (
 };
 
 export const login = async (
-    username: string,
-    password: string
-  ): Promise<LoginResponse | undefined> => {
-    try {
-      const response = await fetchWithToken(`/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
-  
-      if (response.ok) {
-        const data: LoginResponse = await response.json();
-        const token = data.accessToken;
-  
-        const userId = data.user.id;
-  
-        Cookies.set("userId", userId);
-        Cookies.set("token", token);
-  
-        return data;
-      } else {
-        console.error("Inicio de sesión fallido");
-        return undefined;
-      }
-    } catch (error) {
-      console.error("Error al realizar la solicitud", error);
+  username: string,
+  password: string
+): Promise<LoginResponse | undefined> => {
+  try {
+    const response = await fetchWithToken(`/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (response.ok) {
+      const data: LoginResponse = await response.json();
+      const token = data.accessToken;
+
+      const userId = data.user.id;
+
+      Cookies.set("userId", userId);
+      Cookies.set("token", token);
+
+      return data;
+    } else {
+      console.error("Inicio de sesión fallido");
       return undefined;
     }
-  };
+  } catch (error) {
+    console.error("Error al realizar la solicitud", error);
+    return undefined;
+  }
+};
+
+export const validateToken = async (): Promise<boolean> => {
+  const token = Cookies.get("token");
+
+  try {
+    const response = await fetchWithToken("/auth/validate-token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token }), 
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data.isValid;
+    } else {
+      console.error("Error al verificar ");
+      return false;
+    }
+  } catch (error) {
+    console.error('Error al realizar la solicitud', error);
+      return false;
+  }
+};

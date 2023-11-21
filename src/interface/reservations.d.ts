@@ -6,6 +6,23 @@ export interface AuthContextProps {
   children: ReactNode
 }
 
+export interface User {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  username: string;
+  role: string; // Puedes ajustar el tipo según los roles disponibles (ADMIN, USER, etc.)
+  reservationsIncludes: any[]; // Ajusta el tipo según la estructura real de las reservas
+}
+
+interface UserValidationToken {
+  isValid: boolean;
+  userValidate?: User;
+}
+
 export interface UserOwner {
   id: string;
   createdAt: string;

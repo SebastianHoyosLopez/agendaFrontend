@@ -16,7 +16,6 @@ const Login: React.FC = () => {
       const data = await login(username, password);
       if (data) {
         authLogin();
-        router.push("/");
       } else {
         console.error("Inicio de sesión fallido");
       }
