@@ -1,8 +1,8 @@
-import { useEffect } from 'react'
-import Link from 'next/link'
+import { useEffect } from "react";
+import Link from "next/link";
 import Cookies from "js-cookie";
-import './home.css'
-import { useRouter } from 'next/router';
+import "./home.css";
+import { useRouter } from "next/router";
 
 export default function Home() {
   const token = Cookies.get("token");
@@ -10,30 +10,34 @@ export default function Home() {
 
   useEffect(() => {
     if (!token) {
-      router.push('/login')
+      router.push("/login");
     }
-  }, [token, router])
+  }, [token, router]);
 
   return (
     <>
-      <h1>css3 carousel</h1>
-    
-      <div className="carousel">
-        <div className="holder">
-          <p>montar cancion </p>
-          <p>montar cancion </p>
-          <p>montar cancion </p>
-          <p>montar cancion </p>
-          <p>montar cancion </p>
-          <p>montar cancion </p>
-          <p>montar cancion </p>
-          <p>montar cancion </p>
-          <p>montar cancion </p>
-          <p>montar cancion </p>
-        </div>
-      </div>
+      {token ? (
+        <>
+          <h1>css3 carousel</h1>
 
+          <div className="carousel">
+            <div className="holder">
+              <p>montar cancion </p>
+              <p>montar cancion </p>
+              <p>montar cancion </p>
+              <p>montar cancion </p>
+              <p>montar cancion </p>
+              <p>montar cancion </p>
+              <p>montar cancion </p>
+              <p>montar cancion </p>
+              <p>montar cancion </p>
+              <p>montar cancion </p>
+            </div>
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
     </>
-  )
+  );
 }
-

@@ -3,13 +3,12 @@ import { useRouter } from "next/router";
 
 function DynamicPage() {
   const router = useRouter();
-  const { id } = router.query;
+  const id = Array.isArray(router.query.id) ? router.query.id[0] : router.query.id;
 
   return (
-    <div>
-      <p>ID: {id}</p>
-      <DetailsReservation />
-    </div>
+    <>
+      <DetailsReservation id={id} />
+    </>
   );
 }
 

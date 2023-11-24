@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { useAuth } from "./AuthContext";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
@@ -9,6 +9,7 @@ interface AuthenticatorProps {
 
 const Authenticator: React.FC<AuthenticatorProps> = ({ children }) => {
   const { checkToken } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
   const token = Cookies.get("token");
   const router = useRouter();
 
@@ -18,9 +19,16 @@ const Authenticator: React.FC<AuthenticatorProps> = ({ children }) => {
         // Si no hay token o el token no es válido, redirige a la página de inicio de sesión.
         router.push("/login");
       }
+      setIsLoading(false);
     };
+
     checkUserToken();
-  }, []);
+  }, [checkToken, token, router]);
+
+  if (isLoading) {
+    // Puedes mostrar un spinner o cualquier indicador de carga mientras se verifica el token.
+    return <div>Cargando...</div>;
+  }
 
   return <>{children}</>;
 };
