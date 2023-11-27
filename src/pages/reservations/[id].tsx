@@ -1,4 +1,4 @@
-import DetailsReservation from "@/components/detailsReservation/DetailsReservation";
+import DetailsReservation from "@/components/detailsReservation";
 import { useRouter } from "next/router";
 
 function DynamicPage() {

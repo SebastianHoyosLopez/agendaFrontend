@@ -9,10 +9,12 @@
 
 .column1 {
   background-color: #f0f0f0;
+  width: 50%;
 }
 
 .column2 {
   background-color: #e0e0e0;
+  width: 50%;
 }
 
 .containerDetails {

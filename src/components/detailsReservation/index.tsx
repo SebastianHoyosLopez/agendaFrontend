@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 
 import styles from "./detailsReservations.module.css";
 import { getReservationApi } from "@/api/api";
-import { Reservation } from "@/interface";
+import Details from "./Details";
 
 interface PropsData {
   id: string | undefined;
@@ -59,21 +59,13 @@ const DetailsReservation: React.FC<PropsData> = ({ id }) => {
     return <p>No se encontró la reserva</p>;
   }
 
+  console.log(reservation)
   return (
     <div className={styles.container}>
       <div className={`${styles.column} ${styles.column1}`}>
-        <h1 className={styles.title}>Página dinámica</h1>
         <p>ID: {reservation.id}</p>
         <div className={styles.containerDetails}>
-          <h2>{}</h2>
-          <hr />
-          <div className={styles.event_details}>
-            <div>
-              <h4>{reservation.place}</h4>
-              <div>{reservation.description}</div>
-              <div>{reservation.hour}</div>
-            </div>
-          </div>
+          <Details />
         </div>
       </div>
       <div className={`${styles.column} ${styles.column2}`}>
@@ -106,7 +98,6 @@ const DetailsReservation: React.FC<PropsData> = ({ id }) => {
               // onChange={handleInputChange}
             />
           </label>
-
           <button type="submit">Enviar</button>
         </form>
       </div>
