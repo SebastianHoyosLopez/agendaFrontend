@@ -55,6 +55,16 @@ export interface NewReservation {
   hour: string;
 }
 
+export interface Earring {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  earringName: string;
+  earringDescription: string;
+  status: 'CREATED' | 'IN_PROGRESS' | 'COMPLETED'; // Ajusta según los posibles valores
+  responsibleName: string;
+}
+
 export interface Reservation {
   id: string;
   createdAt: string;
@@ -63,8 +73,8 @@ export interface Reservation {
   date: string;
   description: string;
   hour: string;
-  usersIncludes: User[];
-  earrings: any[];
+  usersIncludes: UserOwner[];
+  earrings: Earring[];
 }
 
 export interface LoginResponse {

@@ -2,11 +2,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: row-reverse;
   }
-  
+/*   
   .table_container {
     width: 70%;
-  }
+  } */
 
   .table_container h1 {
     text-align: center;
@@ -18,5 +19,6 @@
 
   .form_container h1 {
     text-align: center;
+    /* margin-top: -20rem; */
   }
   

@@ -1,10 +1,15 @@
 import React from "react";
 import styles from "./detailsReservations.module.css";
-import { Reservation } from "@/interface";
+import { Earring, Reservation } from "@/interface";
 
+interface DetailsProps {
+  reservation: Reservation;
+}
 
-const Details: React.FC = () => {
+const Details: React.FC<DetailsProps> = ({ reservation }) => {
+  console.log(reservation);
 
+  const earrings: Earring[] = reservation.earrings;
   return (
     <div className={styles.container}>
       <div className={styles.column1}>
@@ -12,18 +17,29 @@ const Details: React.FC = () => {
         <hr />
         <div className={styles.event_details}>
           <div>
-            <h4>marinilla</h4>
-            <div>cerca al pueblo</div>
-            <div>12pm</div>
+            <h4>{reservation.place}</h4>
+            <div>{reservation.description}</div>
+            <div>{reservation.hour}</div>
           </div>
         </div>
       </div>
       <div className={styles.column2}>
         <h2>Pendientes</h2>
         <ul>
-          <li>Elemento A</li>
-          <li>Elemento B</li>
-          <li>Elemento C</li>
+          {/* {earrings.map((earring) => (
+            <li key={earring.id}>
+              <strong>Nombre:</strong> {earring.earringName}
+              <br />
+              <strong>Descripción:</strong> {earring.earringDescription}
+              <br />
+              <strong>Responsable:</strong> {earring.responsibleName}
+              <br />
+              <strong>Estado:</strong> {earring.status}
+              <br />
+              {/* Agrega más información según la estructura del Earring */}
+              <hr />
+            {/* </li>} */}
+          {/* ))} */}
         </ul>
       </div>
     </div>

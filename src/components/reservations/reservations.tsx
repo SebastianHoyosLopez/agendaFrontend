@@ -6,6 +6,7 @@ import styles from "./reservations.module.css";
 import { Reservation } from "@/interface";
 import { deleteReservationApi, getReservationsApi } from "@/api/api";
 import ReservationForm from "../forms/formReservation/FormReservation";
+import { useAuth } from "../Auth/AuthContext";
 
 const columns = [
   { label: "Place", key: "place" },
@@ -16,10 +17,22 @@ const columns = [
 
 const Reservations: React.FC = () => {
   const token = Cookies.get("token");
+  const { checkToken } = useAuth();
+
 
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [isValid, setIsValid] = useState<boolean>();
+
+  // useEffect(() => {
+  //   const verifyToken = async () => {
+  //     const isValidResult: boolean = await checkToken();
+  //     setIsValid(isValidResult);
+  //   };
+    
+  //   verifyToken();
+  // }, [checkToken]);
 
   useEffect(() => {
     const fetchReservations = async () => {
@@ -29,7 +42,19 @@ const Reservations: React.FC = () => {
 
         const data = await getReservationsApi(token);
 
-        data?.length && setReservations(data);
+        if (typeof data === "string") {
+          // Aquí puedes manejar el mensaje de expiración
+          console.log(data);
+          
+        } else if (data) {
+          // Aquí puedes manejar los datos de reservas
+          data?.length && setReservations(data);
+        } else {
+          // Aquí puedes manejar el caso en que no hay reservas
+          console.log("No hay reservas");
+        }
+
+        
       } catch (error) {
         console.error("Error al obtener las reservas", error);
         setError("Error al obtener las reservas");
@@ -77,7 +102,7 @@ const Reservations: React.FC = () => {
             <ReservationForm />
           </div>
           <div className={styles.table_container}>
-            <h1>Reservaciones</h1>
+            <h1 >Reservaciones</h1>
             {loading && <p>Cargando...</p>}
             {error && <p>Error: {error}</p>}
             {!loading && !error && (

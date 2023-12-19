@@ -64,6 +64,11 @@ export const login = async (
 export const validateToken = async (): Promise<boolean> => {
   const token = Cookies.get("token");
 
+  if (!token) {
+    console.error("Token no encontrado en las cookies");
+    return false;
+  }
+
   try {
     const response = await fetchWithToken("/auth/validate-token", {
       method: "POST",
@@ -77,18 +82,18 @@ export const validateToken = async (): Promise<boolean> => {
       const data = await response.json();
       return data.isValid;
     } else {
-      console.error("Error al verificar ");
+      console.error("Error al verificar el token:", response.statusText);
       return false;
     }
   } catch (error) {
-    console.error("Error al realizar la solicitud", error);
+    console.error("Error al realizar la solicitud:", error);
     return false;
   }
 };
 
 export const getReservationsApi = async (
   token: string | undefined
-): Promise<Reservation[] | undefined> => {
+): Promise<Reservation[] | string | undefined> => {
   try {
     const headers = new Headers();
     headers.append("agenda_token", token ?? "");
@@ -99,7 +104,7 @@ export const getReservationsApi = async (
 
     if (response.status === 401) {
       console.log("El token ha expirado");
-      return undefined;
+      return "El token ha expirado";
     }
 
     if (response.status === 400) {
