@@ -1,9 +1,5 @@
 // api.ts
-import {
-  LoginResponse,
-  NewReservation,
-  Reservation,
-} from "@/interface";
+import { LoginResponse, NewReservation, Reservation } from "@/interface";
 import Cookies from "js-cookie";
 
 const API_BASE_URL = "http://localhost:4000/apiAgenda";
@@ -91,6 +87,34 @@ export const validateToken = async (): Promise<boolean> => {
   }
 };
 
+export const getReservationHistoryApi = async (
+  token: string | undefined
+): Promise<Reservation[] | string | undefined> => {
+  try {
+    const headers = new Headers();
+    headers.append("agenda_token", token ?? "");
+
+    const response = await fetchWithToken("/reservations/history", {
+      headers: headers,
+    });
+
+    if (response.status === 401) {
+      console.log("El token ha expirado");
+      return "El token ha expirado";
+    }
+
+    if (response.status === 400) {
+      console.log("No hay reservas");
+      return undefined;
+    }
+    const data: Reservation[] | undefined = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error al obtener las reservas", error);
+    return undefined;
+  }
+};
+
 export const getReservationsApi = async (
   token: string | undefined
 ): Promise<Reservation[] | string | undefined> => {
@@ -143,7 +167,7 @@ export const getReservationApi = async (
     console.error("Error al obtener las reservas", error);
     return undefined;
   }
-}
+};
 
 export const deleteReservationApi = async (
   reservationId: string,
@@ -211,7 +235,6 @@ export const reservationSubmitApi = async (reservation: NewReservation) => {
       // Manejar errores de la creación de la reserva
       console.error("Error al crear la reserva");
     }
-
   } catch (error) {
     console.error("Error al enviar la reserva al servidor", error);
   }

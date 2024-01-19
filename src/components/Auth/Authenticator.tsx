@@ -23,7 +23,7 @@ const Authenticator: React.FC<AuthenticatorProps> = ({ children }) => {
     };
 
     checkUserToken();
-  }, []);
+  }, [checkToken, router, token]);
 
   if (isLoading) {
     // Puedes mostrar un spinner o cualquier indicador de carga mientras se verifica el token.

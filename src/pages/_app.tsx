@@ -1,5 +1,5 @@
 import { AuthProvider } from "@/components/Auth/AuthContext";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/NavbarMenu/index";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import Authenticator from "@/components/Auth/Authenticator";
@@ -8,15 +8,17 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <AuthProvider>
-        <Head><link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/icon?family=Material+Icons"
-        /> </Head>
+        <Head>
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          />
+        </Head>
         <Navbar />
         <Authenticator>
           <Component {...pageProps} />
         </Authenticator>
       </AuthProvider>
     </>
-  )
+  );
 }

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import "./table.css";
+import { Reservation, User } from "@/interface";
 
 interface Column {
   label: string;
@@ -13,6 +14,7 @@ interface TableProps<T> {
   detailsLink?: (item: T) => string;
   onDelete?: (reservationId: string, relationId: string) => void;
   itemsPerPage?: number;
+  renderAdditionalColumn?: (item: T) => React.ReactNode;
 }
 
 const Table = <T extends Record<string, any>>({
@@ -21,6 +23,7 @@ const Table = <T extends Record<string, any>>({
   detailsLink,
   onDelete,
   itemsPerPage = 10,
+  renderAdditionalColumn,
 }: TableProps<T>) => {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -43,6 +46,7 @@ const Table = <T extends Record<string, any>>({
             {columns.map((column) => (
               <th key={column.key}>{column.label}</th>
             ))}
+            {renderAdditionalColumn && <th>Encargado</th>}
             {detailsLink && <th>Details</th>}
           </tr>
         </thead>
@@ -52,18 +56,23 @@ const Table = <T extends Record<string, any>>({
               {columns.map((column) => (
                 <td key={column.key}>{item[column.key]}</td>
               ))}
+              {renderAdditionalColumn && (
+                <td>{renderAdditionalColumn(item)}</td>
+              )}
               {detailsLink && (
                 <td>
                   <Link href={detailsLink(item)}>
                     <span className="material-icons">display_settings</span>
                   </Link>
-                  <button
-                    onClick={() =>
-                      handleDelete(item.id, item.usersIncludes[0].id)
-                    }
-                  >
-                    <span className="material-icons">delete_forever</span>
-                  </button>
+                  {onDelete && (
+                    <button
+                      onClick={() =>
+                        handleDelete(item.id, item.usersIncludes[0].id)
+                      }
+                    >
+                      <span className="material-icons">delete_forever</span>
+                    </button>
+                  )}
                 </td>
               )}
             </tr>
@@ -88,6 +97,11 @@ const Table = <T extends Record<string, any>>({
       </div>
     </>
   );
+};
+
+const getEncargadoName = (reservation: Reservation): string => {
+  const user = reservation.usersIncludes[0]?.user as User | undefined;
+  return user ? `${user.firstName} ${user.lastName}` : "Sin encargado";
 };
 
 export default Table;

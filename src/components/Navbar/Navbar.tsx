@@ -1,12 +1,12 @@
-'use client'
-import React, { useEffect, useState } from "react";
-import NavbarResponsive from "./NavbarResponsive";
-import Link from "next/link";
-import styles from "./navbar.module.css";
-import { useAuth } from "../Auth/AuthContext";
-import { useRouter } from "next/router";
+// components/Navbar.tsx
+import React, { useEffect, useState } from 'react';
+import NavbarResponsive from './NavbarResponsive';
+import Link from 'next/link';
+import styles from './navbar.module.css'; // Cambia la ruta según tu estructura de carpetas
+import { useAuth } from '../Auth/AuthContext';
+import { useRouter } from 'next/router';
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
   const { checkToken, logout } = useAuth();
   const [isValid, setIsValid] = useState<boolean>();
   const router = useRouter();
@@ -22,7 +22,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    router.push("/login");
+    router.push('/login');
   };
 
   const toggleMenu = () => {
@@ -48,8 +48,8 @@ const Navbar = () => {
               </Link>
             </li>
             <li className={styles.item}>
-              <Link className={styles.link} href="/about-us">
-                About Us
+              <Link className={styles.link} href="/history">
+                Historial
               </Link>
             </li>
             <li className={styles.alignRight} onClick={toggleMenu}>
@@ -57,16 +57,14 @@ const Navbar = () => {
               {isMenuOpen && (
                 <div className={styles.dropdownMenuLeft}>
                   <ul>
-                    <li >
+                    <li>
                       <Link href="/perfil">Perfil</Link>
                     </li>
-                    <li >
+                    <li>
                       <Link href="/configuracion">Configuración</Link>
                     </li>
-                    <li >
-                      <button onClick={() => handleLogout()}>
-                        Cerrar Sesión
-                      </button>
+                    <li>
+                      <button onClick={() => handleLogout()}>Cerrar Sesión</button>
                     </li>
                   </ul>
                 </div>
@@ -75,7 +73,7 @@ const Navbar = () => {
           </ul>
         </>
       ) : (
-        ""
+        ''
       )}
     </div>
   );
