@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Table from "../table/Table";
 import { Reservation, User } from "@/interface";
+import { useAuth } from "../Auth/AuthContext";
 
 interface Column {
   label: string;
@@ -22,9 +23,21 @@ const ContainerTable: React.FC<ContainerTableProps> = ({
   handleDelete,
   columns,
 }) => {
+
+  const { checkToken } = useAuth();
+  const [isValid, setIsValid] = useState<boolean>();
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      const isValidResult: boolean = await checkToken();
+      setIsValid(isValidResult);
+    };
+
+    verifyToken();
+  }, [checkToken]);
+
   const reservationsDetailsLink = (reservation: Reservation) =>
     `/reservations/${reservation.id}`;
-
 
   console.log(reservations)
   return (
@@ -39,6 +52,7 @@ const ContainerTable: React.FC<ContainerTableProps> = ({
           columns={[
             ...columns,
           ]}
+          isValid={isValid}
           renderAdditionalColumn={(reservation: Reservation) => (
             getEncargadoName(reservation)
           )}

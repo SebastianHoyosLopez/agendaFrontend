@@ -17,6 +17,7 @@
     "react": "^18",
     "react-datepicker": "^4.21.0",
     "react-dom": "^18",
+    "react-modal": "^3.16.1",
     "react-time-picker": "^6.5.2"
   },
   "devDependencies": {
@@ -25,6 +26,7 @@
     "@types/react": "^18",
     "@types/react-datepicker": "^4.19.3",
     "@types/react-dom": "^18",
+    "@types/react-modal": "^3.16.3",
     "autoprefixer": "^10.4.16",
     "eslint": "^8",
     "eslint-config-next": "14.0.1",

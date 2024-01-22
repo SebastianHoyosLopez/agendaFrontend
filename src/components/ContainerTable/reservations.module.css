@@ -15,7 +15,8 @@
 
 .sidebar {
   grid-area: sidebar;
-  margin: 4rem;
+  margin: 3rem;
+  width: 20rem;
 }
 .body {
   grid-area: body;

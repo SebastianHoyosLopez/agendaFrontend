@@ -115,16 +115,10 @@ export const getReservationHistoryApi = async (
   }
 };
 
-export const getReservationsApi = async (
-  token: string | undefined
-): Promise<Reservation[] | string | undefined> => {
-  try {
-    const headers = new Headers();
-    headers.append("agenda_token", token ?? "");
 
-    const response = await fetchWithToken("/reservations/all", {
-      headers: headers,
-    });
+export const getReservationsApi = async (): Promise<Reservation[] | string | undefined> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/reservations/all`);
 
     if (response.status === 401) {
       console.log("El token ha expirado");
@@ -143,6 +137,32 @@ export const getReservationsApi = async (
     return undefined;
   }
 };
+// export const getReservationsApi = async (
+//   // token: string | undefined
+// ): Promise<Reservation[] | string | undefined> => {
+//   try {
+//     const headers = new Headers();
+//     // headers.append("agenda_token", token ?? "");
+
+//     const response = await fetchWithToken("/reservations/all");
+
+//     if (response.status === 401) {
+//       console.log("El token ha expirado");
+//       return "El token ha expirado";
+//     }
+
+//     if (response.status === 400) {
+//       console.log("No hay reservas");
+//       return undefined;
+//     }
+
+//     const data: Reservation[] | undefined = await response.json();
+//     return data;
+//   } catch (error) {
+//     console.error("Error al obtener las reservas", error);
+//     return undefined;
+//   }
+// };
 
 export const getReservationApi = async (
   reservationId: string | undefined,

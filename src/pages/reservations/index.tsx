@@ -14,7 +14,7 @@ const columns = [
   { label: "Hour", key: "hour" },
 ];
 
-export default function Reservations() {
+const Reservations: React.FC = () => {
   const token = Cookies.get("token");
   const { checkToken } = useAuth();
 
@@ -38,7 +38,7 @@ export default function Reservations() {
         setLoading(true);
         setError(null);
 
-        const data = await getReservationsApi(token);
+        const data = await getReservationsApi();
 
         if (typeof data === "string") {
           // Aquí puedes manejar el mensaje de expiración
@@ -58,15 +58,16 @@ export default function Reservations() {
       }
     };
 
-    if (token) {
-      fetchReservations();
-    }
+    fetchReservations();
+
 
     // Limpia la suscripción al desmontar el componente
     return () => {
       setReservations([]);
     };
-  }, [token]);
+  }, []);
+
+  console.log(reservations)
 
   const handleDelete = async (reservationId: string, relationId: string) => {
     try {
@@ -91,24 +92,25 @@ export default function Reservations() {
 
   return (
     <>
-      {token ? (
-        <section className={styles.layout}>
+      <section className={styles.layout}>
+        {isValid && (
           <div className={styles.sidebar}>
-            {/* <h1 className={styles.h1}>Reserve a Spot</h1> */}
             <ReservationForm />
           </div>
-          <div className={styles.body}>
-            <h1 className={styles.h1}>Reservaciones</h1>
-            <ContainerTable
-              loading={loading}
-              error={error}
-              reservations={reservations}
-              handleDelete={handleDelete}
-              columns={columns}
-            />
-          </div>
-        </section>
-      ) : null}
+        )}
+        <div className={styles.body}>
+          <h1 className={styles.h1}>Reservaciones</h1>
+          <ContainerTable
+            loading={loading}
+            error={error}
+            reservations={reservations}
+            handleDelete={handleDelete}
+            columns={columns}
+          />
+        </div>
+      </section>
     </>
   );
 }
+
+export default Reservations;

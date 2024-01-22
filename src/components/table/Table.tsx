@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import "./table.css";
 import { Reservation, User } from "@/interface";
+import { ModalCuston } from "../modal/Modal";
 
 interface Column {
   label: string;
@@ -15,6 +16,7 @@ interface TableProps<T> {
   onDelete?: (reservationId: string, relationId: string) => void;
   itemsPerPage?: number;
   renderAdditionalColumn?: (item: T) => React.ReactNode;
+  isValid: boolean | undefined;
 }
 
 const Table = <T extends Record<string, any>>({
@@ -24,6 +26,7 @@ const Table = <T extends Record<string, any>>({
   onDelete,
   itemsPerPage = 10,
   renderAdditionalColumn,
+  isValid,
 }: TableProps<T>) => {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -47,7 +50,7 @@ const Table = <T extends Record<string, any>>({
               <th key={column.key}>{column.label}</th>
             ))}
             {renderAdditionalColumn && <th>Encargado</th>}
-            {detailsLink && <th>Details</th>}
+            {isValid && <>{detailsLink && <th>Details</th>}</>}
           </tr>
         </thead>
         <tbody>
@@ -59,21 +62,27 @@ const Table = <T extends Record<string, any>>({
               {renderAdditionalColumn && (
                 <td>{renderAdditionalColumn(item)}</td>
               )}
-              {detailsLink && (
-                <td>
-                  <Link href={detailsLink(item)}>
-                    <span className="material-icons">display_settings</span>
-                  </Link>
-                  {onDelete && (
-                    <button
-                      onClick={() =>
-                        handleDelete(item.id, item.usersIncludes[0].id)
-                      }
-                    >
-                      <span className="material-icons">delete_forever</span>
-                    </button>
+
+              {isValid && (
+                <div className="container-details">
+                  {detailsLink && (
+                    <>
+                      <Link href={detailsLink(item)}>
+                        <span className="material-icons">display_settings</span>
+                      </Link>
+                      {onDelete && (
+                        <div style={{ cursor: "pointer" }}
+                          onClick={() =>
+                            handleDelete(item.id, item.usersIncludes[0].id)
+                          }
+                        >
+                          <span className="material-icons">delete_forever</span>
+                        </div>
+                      )}
+                    </>
                   )}
-                </td>
+                  <ModalCuston />
+                </div>
               )}
             </tr>
           ))}

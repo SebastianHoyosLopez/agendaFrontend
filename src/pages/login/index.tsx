@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useAuth } from "@/components/Auth/AuthContext";
 import { useRouter } from "next/router";
-import FormLogin from "../../components/forms/formLogin/FormLogin";
 import { login } from "@/api/api";
+import { LoginForm } from "@/components/forms/loginForm/LoginForm";
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -26,7 +26,7 @@ const Login: React.FC = () => {
 
   return (
     <>
-      <FormLogin
+      <LoginForm
         handleLogin={handleLogin}
         username={username}
         password={password}

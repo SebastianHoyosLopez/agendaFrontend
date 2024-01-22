@@ -60,7 +60,7 @@ export default function History() {
   }, [router, token]);
 
   return (
-    <>
+    <div >
       <h1 className={styles.h1}>Historial de reservas</h1>
       <ContainerTable
         loading={loading}
@@ -68,6 +68,6 @@ export default function History() {
         reservations={reservationsHistory}
         columns={columns}
       />
-    </>
+    </div>
   );
 }

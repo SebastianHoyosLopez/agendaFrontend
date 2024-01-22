@@ -4,6 +4,10 @@ table {
   margin: 3rem auto;
 }
 
+button {
+  border: none;
+}
+
 /* Zebra striping */
 tr:nth-of-type(odd) {
   background: #eee;
@@ -44,6 +48,13 @@ th {
   border: 1px solid #ccc;
   text-align: left;
   font-size: 18px;
+}
+
+.container-details {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vh;
 }
 
 span {
